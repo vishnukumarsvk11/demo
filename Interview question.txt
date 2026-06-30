@@ -1,0 +1,58 @@
+1.Implicit Wait is a global wait that is applied once after initializing the WebDriver and remains active until the driver session ends. It waits for elements to be found before throwing a NoSuchElementException. Explicit Wait is applied only for specific elements or conditions using WebDriverWait and ExpectedConditions, such as visibility, clickability, alert presence, or frame availability. In real-time projects, we generally prefer Explicit Wait because it provides better control and improves script reliability. Also, mixing Implicit and Explicit waits is not recommended.
+
+2. StaleElementReferenceException occurs when a previously located WebElement is no longer attached to the current DOM due to page refresh, navigation, or dynamic DOM updates. To resolve it, I re-locate the element and use Explicit Wait to ensure the element is available before interacting with it.
+
+3. findElement() is used to locate a single web element on the page. It returns a WebElement. If multiple elements match the locator, it returns the first matching element. If no element is found, it throws a NoSuchElementException.
+
+findElements() is used to locate multiple web elements. It returns a List<WebElement>. If multiple elements match, it returns all matching elements. If no elements are found, it does not throw an exception; instead, it returns an empty list with a size of 0.
+
+In real-time automation, I use findElement() when I expect only one element, such as a Login button or Username field. I use findElements() when I need to work with multiple elements, such as menu items, table rows, search results, or lists."
+
+4. Absolute XPath starts from the root node (/html) and specifies the complete path to the target element. Since it depends on the entire DOM hierarchy, even a small change in the page structure can make it invalid. Therefore, it is generally not recommended in automation projects.
+
+Relative XPath starts with // and locates the element directly using attributes such as id, name, class, text(), contains(), or starts-with(). It is more flexible, easier to maintain, and less affected by DOM changes. That's why Relative XPath is the preferred choice in real-time automation projects."
+
+5. XML Path	                                     Cascading Style Sheets
+Can move forward and backward in the DOM	     Can move only forward
+Supports text()	                                     Does not support text()
+Supports axes (ancestor, parent, following-sibling)  Does not support XPath axes
+Slightly slower	                                     Generally faster               
+Better for complex locators	                     Better for simple locators
+
+6.driver.close()	                                         driver.quit()
+Closes current browser window/tab	                        Closes all browser windows
+WebDriver session remains active if other windows are open	Ends the WebDriver session
+
+7. JavaScriptExecutor is an interface in Selenium that allows us to execute JavaScript code directly in the browser. I use it when Selenium WebDriver cannot perform an action reliably due to hidden elements, dynamic pages, or scrolling issues.
+
+In my project, I mainly used JavaScriptExecutor for scrolling the page, scrolling an element into view, clicking elements when the normal click() method was not working, and retrieving page information. However, I use it only as a fallback. My first preference is always the standard Selenium methods."
+
+8. driver.get(url) is used to open a URL and wait until the page is fully loaded before continuing execution. It is mainly used to launch the application.
+
+driver.navigate().to(url) also opens a URL, but it belongs to the Navigation interface, which provides additional browser navigation methods such as back(), forward(), and refresh().
+
+9.getText() retrieves the visible text of an element. It is mainly used to validate messages, labels, headings, and button text.
+
+getAttribute() retrieves the value of a specified HTML attribute, such as id, name, value, placeholder, or type.
+
+getCssValue() retrieves the CSS property value of an element, such as color, font size, background color, or font family. It is mainly used for UI validation."
+
+10.Alert -> not handled and try to perform any option then face "UnhandledAlertException"
+
+11. 1. NoSuchElementException – This occurs when Selenium cannot locate an element due to an incorrect locator or because the element hasn't loaded yet. I verify the locator and use Explicit Wait for dynamic elements.
+
+2. ElementClickInterceptedException – This happens when another element, such as a popup or loading spinner, blocks the target element. I use WebDriverWait until the blocking element disappears and then perform the click.
+
+3. StaleElementReferenceException – This occurs when the page refreshes or the DOM is updated, making the previous WebElement reference invalid. I locate the element again or use Explicit Wait before interacting with it.
+
+4. TimeoutException – This occurs when the expected condition is not met within the specified wait time. I verify the locator, increase the wait if appropriate, and ensure the application is loading correctly.
+
+12. @BeforeSuite was used for suite-level initialization, such as loading configuration.
+@BeforeTest was used to initialize the browser and application URL.
+@BeforeClass was used for class-specific setup.
+@BeforeMethod was used for preconditions before each test, such as logging into the application if required.
+@Test contains the actual test case.
+@AfterMethod was used to capture screenshots on failure and perform cleanup.
+@AfterClass handled class-level cleanup.
+@AfterTest closed the browser using driver.quit().
+@AfterSuite was used to generate reports or perform final cleanup.
